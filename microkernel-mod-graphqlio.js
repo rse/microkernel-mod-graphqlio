@@ -27,14 +27,23 @@ import Promise       from "bluebird"
 import Ducky         from "ducky"
 import { Server }    from "graphql-io-server"
 
+/*  the Microkernel module  */
 export default class Module {
     constructor (options = {}) {
+        /*  support options very similar to underlying GraphQL IO Server  */
         this.options = Ducky.options({
             prefix:      [ "string", "GraphQL-IO-" ],
             name:        [ "string", "GraphQL-IO-Server" ],
+            host:        [ "string", "127.0.0.1" ],
+            port:        [ "number", 8080 ],
+            tls: {
+                crt:     [ "string", "" ],
+                key:     [ "string", "" ]
+            },
             ttl:         [ "number", 7 * 24 * 60 * 60 * 1000 ],
             pubsub:      [ "string", "spm" ],
             keyval:      [ "string", "spm" ],
+            secret:      [ "string", "" ],
             frontend:    [ "string", "" ],
             graphiql:    [ "boolean", true ],
             encoding:    [ "/^(?:cbor|msgpack|json)$/", "json" ],
@@ -43,31 +52,30 @@ export default class Module {
         }, options)
     }
     get module () {
+        /*  identity module  */
         return {
-            name:  "microkernel-mod-hapi",
-            tag:   "HAPI",
+            name:  "microkernel-mod-graphqlio",
+            tag:   "GRAPHQLIO",
             group: "BASE"
         }
     }
     latch (kernel) {
+        /*  allow some options to be conveniently overwritten via CLI options  */
         kernel.latch("options:options", (options) => {
             options.push({
-                names: [ "host", "H" ], type: "string", "default": "127.0.0.1",
+                names: [ "host", "H" ], type: "string", "default": this.options.host,
                 help: "IP address to listen", helpArg: "ADDRESS" })
             options.push({
-                names: [ "port", "P" ], type: "integer", "default": 8080,
+                names: [ "port", "P" ], type: "integer", "default": this.options.port,
                 help: "TCP port to listen", helpArg: "PORT" })
             options.push({
-                names: [ "tls" ], type: "bool", "default": false,
-                help: "speak TLS on host/port" })
-            options.push({
-                names: [ "tls-key" ], type: "string", "default": null,
-                help: "use private key for TLS", helpArg: "FILE" })
-            options.push({
-                names: [ "tls-cert" ], type: "string", "default": null,
+                names: [ "crt" ], type: "string", "default": this.options.tls.crt,
                 help: "use X.509 certificate for TLS", helpArg: "FILE" })
             options.push({
-                names: [ "jwt-secret" ], type: "string", "default": "",
+                names: [ "key" ], type: "string", "default": this.options.tls.key,
+                help: "use private key for TLS", helpArg: "FILE" })
+            options.push({
+                names: [ "secret" ], type: "string", "default": this.options.secret,
                 help: "use secret for JSON Web Tokens (JWT)", helpArg: "SECRET" })
         })
     }
@@ -76,18 +84,22 @@ export default class Module {
         if (!kernel.rs("ctx:procmode").match(/^(?:standalone|worker)$/))
             return
 
-        /*  create GraphQL-IO Server instance  */
-        if (   kernel.rs("options:options").tls
-            && (   kernel.rs("options:options").tls_key === null
-                || kernel.rs("options:options").tls_cert === null))
-            throw new Error("TLS requires Certificate/Key")
-        let protocol = kernel.rs("options:options").tls ? "https" : "http"
-        let url = `${protocol}:${kernel.rs("options:options").host}:${kernel.rs("options:options").port}`
+        /*  determine CLI options  */
+        let cliOptions = kernel.rs("options:options")
+
+        /*  sanity check TLS usage  */
+        if (   (cliOptions.key !== "" && cliOptions.crt === "")
+            || (cliOptions.key === "" && cliOptions.crt !== ""))
+            throw new Error("TLS requires both Certificate and Key")
+
+        /*  determine GraphQL-IO Server options  */
+        let withTLS = (cliOptions.crt !== "" && cliOptions.key !== "")
+        let protocol = withTLS ? "https" : "http"
+        let url = `${protocol}:${cliOptions.host}:${cliOptions.port}/api`
         let opts = {
             prefix:   this.options.prefix,
             name:     this.options.name,
             url:      url,
-            secret:   kernel.rs("options:options").jwt_secret,
             pubsub:   this.options.pubsub,
             keyval:   this.options.keyval,
             frontend: this.options.frontend,
@@ -95,26 +107,26 @@ export default class Module {
             encoding: this.options.encoding,
             debug:    this.options.debug
         }
+        if (cliOptions.secret !== "")
+            opts.secret = cliOptions.secret
         if (this.options.example !== null)
             opts.example = this.options.example
-        if (kernel.rs("options:options").tls) {
-            opts.tls = {
-                crt: kernel.rs("options:options").tls_cert,
-                key: kernel.rs("options:options").tls_key
-            }
-        }
+        if (withTLS)
+            opts.tls = { crt: cliOptions.crt, key: cliOptions.key }
+
+        /*  create GraphQL-IO Server instance  */
         let server = new Server(opts)
         kernel.rs("graphqlio", server)
 
         /*  display network interaction information  */
         const displayListenHint = ([ scheme, proto ]) => {
-            let url = `${scheme}://${kernel.rs("options:options").host}:${kernel.rs("options:options").port}`
+            let url = `${scheme}://${cliOptions.host}:${cliOptions.port}/api`
             kernel.sv("log", "graphiqlio", "info", `listen on ${url} (${proto})`)
         }
-        displayListenHint(kernel.rs("options:options").tls ?
+        displayListenHint(withTLS ?
             [ "https", "HTTP/{1.0,1.1,2.0} + SSL/TLS" ] :
             [ "http",  "HTTP/{1.0,1.1}" ])
-        displayListenHint(kernel.rs("options:options").tls ?
+        displayListenHint(withTLS ?
             [ "wss", "WebSockets + SSL/TLS" ] :
             [ "ws",  "WebSockets" ])
     }
