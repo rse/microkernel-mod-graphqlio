@@ -1,0 +1,45 @@
+{
+    "name":        "microkernel-mod-graphqlio",
+    "version":     "0.9.0",
+    "description": "Microkernel module for integrating GraphQL-IO Server",
+    "keywords": [
+        "microkernel", "module", "graphqlio"
+    ],
+    "repository": {
+        "type": "git",
+        "url":  "https://github.com/rse/microkernel-mod-graphqlio.git"
+    },
+    "author": {
+        "name":  "Ralf S. Engelschall",
+        "email": "rse@engelschall.com",
+        "url":   "http://engelschall.com"
+    },
+    "license":  "MIT",
+    "homepage": "https://github.com/rse/microkernel-mod-graphqlio",
+    "bugs":     "https://github.com/rse/microkernel-mod-graphqlio/issues",
+    "dependencies": {
+        "bluebird":                   "~3.5.0",
+        "ducky":                      "~2.6.0",
+        "graphql-io-server":          "~0.9.7"
+    },
+    "devDependencies": {
+        "babel-cli":                  "~6.24.1",
+        "babel-preset-es2015":        "~6.24.1",
+        "babel-eslint":               "~7.2.3",
+        "eslint":                     "~4.1.1",
+        "eslint-config-standard":     "~10.2.1",
+        "eslint-plugin-standard":     "~3.0.1",
+        "eslint-plugin-promise":      "~3.5.0",
+        "eslint-plugin-import":       "~2.6.1",
+        "eslint-plugin-node":         "~5.1.0"
+    },
+    "peerDependencies": {
+        "microkernel":                "*",
+        "microkernel-mod-ctx":        "*",
+        "microkernel-mod-logger":     "*"
+    },
+    "scripts": {
+        "prepublish": "eslint --config eslint.yaml microkernel-mod-graphqlio.js && babel --presets es2015 microkernel-mod-graphqlio.js >microkernel-mod-graphqlio.js5"
+    },
+    "main": "microkernel-mod-graphqlio.js5"
+}
