@@ -48,7 +48,7 @@ export default class Module {
             graphiql:    [ "boolean", true ],
             encoding:    [ "/^(?:cbor|msgpack|json)$/", "json" ],
             debug:       [ "number", 0 ],
-            example:     [ "string", null ]
+            example:     [ "string", "" ]
         }, options)
     }
     get module () {
@@ -95,7 +95,7 @@ export default class Module {
         /*  determine GraphQL-IO Server options  */
         let withTLS = (cliOptions.crt !== "" && cliOptions.key !== "")
         let protocol = withTLS ? "https" : "http"
-        let url = `${protocol}:${cliOptions.host}:${cliOptions.port}/api`
+        let url = `${protocol}://${cliOptions.host}:${cliOptions.port}/api`
         let opts = {
             prefix:   this.options.prefix,
             name:     this.options.name,
