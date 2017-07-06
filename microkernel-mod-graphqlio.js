@@ -109,7 +109,7 @@ export default class Module {
         }
         if (cliOptions.secret !== "")
             opts.secret = cliOptions.secret
-        if (this.options.example !== null)
+        if (this.options.example !== "")
             opts.example = this.options.example
         if (withTLS)
             opts.tls = { crt: cliOptions.crt, key: cliOptions.key }
