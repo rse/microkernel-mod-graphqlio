@@ -47,7 +47,7 @@ export default class Module {
             frontend:    [ "string", "" ],
             graphiql:    [ "boolean", true ],
             encoding:    [ "/^(?:cbor|msgpack|json)$/", "json" ],
-            debug:       [ "number", 0 ],
+            debug:       [ "number", 9 ],
             example:     [ "string", "" ]
         }, options)
     }
@@ -118,10 +118,19 @@ export default class Module {
         let server = new Server(opts)
         kernel.rs("graphqlio", server)
 
+        /*  pass-through debug information from GraphQL-IO to Microkernel  */
+        server.on("debug", ({ date, level, msg, log }) => {
+            let levelName
+            if      (level === 1) levelName = "info"
+            else if (level === 2) levelName = "trace"
+            else                  levelName = "debug"
+            kernel.sv("log", "graphqlio", levelName, msg)
+        })
+
         /*  display network interaction information  */
         const displayListenHint = ([ scheme, proto ]) => {
             let url = `${scheme}://${cliOptions.host}:${cliOptions.port}/api`
-            kernel.sv("log", "graphiqlio", "info", `listen on ${url} (${proto})`)
+            kernel.sv("log", "graphqlio", "info", `listen on ${url} (${proto})`)
         }
         displayListenHint(withTLS ?
             [ "https", "HTTP/{1.0,1.1,2.0} + SSL/TLS" ] :
