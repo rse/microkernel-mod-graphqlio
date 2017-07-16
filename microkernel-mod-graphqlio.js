@@ -95,7 +95,7 @@ export default class Module {
         /*  determine GraphQL-IO Server options  */
         let withTLS = (cliOptions.crt !== "" && cliOptions.key !== "")
         let protocol = withTLS ? "https" : "http"
-        let url = `${protocol}://${cliOptions.host}:${cliOptions.port}/api`
+        let url = `${protocol}://${cliOptions.host}:${cliOptions.port}`
         let opts = {
             prefix:   this.options.prefix,
             name:     this.options.name,
