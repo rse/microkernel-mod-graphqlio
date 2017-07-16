@@ -19,8 +19,8 @@
     "bugs":     "https://github.com/rse/microkernel-mod-graphqlio/issues",
     "dependencies": {
         "bluebird":                   "~3.5.0",
-        "ducky":                      "~2.6.0",
-        "graphql-io-server":          "~0.9.21"
+        "ducky":                      "~2.6.1",
+        "graphql-io-server":          "~0.9.23"
     },
     "devDependencies": {
         "babel-cli":                  "~6.24.1",
