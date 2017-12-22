@@ -1,6 +1,6 @@
 {
     "name":        "microkernel-mod-graphqlio",
-    "version":     "0.9.19",
+    "version":     "0.9.20",
     "description": "Microkernel module for integrating GraphQL-IO Server",
     "keywords": [
         "microkernel", "module", "graphqlio"
