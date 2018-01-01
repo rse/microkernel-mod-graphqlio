@@ -20,7 +20,7 @@
     "dependencies": {
         "bluebird":                   "~3.5.1",
         "ducky":                      "~2.6.3",
-        "graphql-io-server":          "~0.9.48"
+        "graphql-io-server":          "~0.9.49"
     },
     "devDependencies": {
         "babel-cli":                  "~6.26.0",
