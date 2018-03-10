@@ -20,7 +20,7 @@
     "dependencies": {
         "bluebird":                   "~3.5.1",
         "ducky":                      "~2.6.4",
-        "graphql-io-server":          "~0.9.62"
+        "graphql-io-server":          "~0.9.63"
     },
     "devDependencies": {
         "babel-cli":                  "~6.26.0",
@@ -29,7 +29,7 @@
         "eslint":                     "~4.18.2",
         "eslint-config-standard":     "~11.0.0",
         "eslint-plugin-standard":     "~3.0.1",
-        "eslint-plugin-promise":      "~3.6.0",
+        "eslint-plugin-promise":      "~3.7.0",
         "eslint-plugin-import":       "~2.9.0",
         "eslint-plugin-node":         "~6.0.1"
     },
