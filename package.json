@@ -38,8 +38,11 @@
         "microkernel-mod-ctx":        "*",
         "microkernel-mod-logger":     "*"
     },
-    "scripts": {
-        "prepublishOnly": "eslint --config eslint.yaml microkernel-mod-graphqlio.js && babel --presets env microkernel-mod-graphqlio.js >microkernel-mod-graphqlio.js5"
+    "engines": {
+        "node":                       ">=8.0.0"
     },
-    "main": "microkernel-mod-graphqlio.js5"
+    "scripts": {
+        "prepublishOnly": "eslint --config eslint.yaml microkernel-mod-graphqlio.js"
+    },
+    "main": "microkernel-mod-graphqlio.js"
 }

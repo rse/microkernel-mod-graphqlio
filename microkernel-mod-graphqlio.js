@@ -23,12 +23,11 @@
 */
 
 /*  external requirements (non-standard)  */
-import Promise       from "bluebird"
-import Ducky         from "ducky"
-import { Server }    from "graphql-io-server"
+const Ducky      = require("ducky")
+const { Server } = require("graphql-io-server")
 
 /*  the Microkernel module  */
-export default class Module {
+class Module {
     constructor (options = {}) {
         /*  support options very similar to underlying GraphQL IO Server  */
         this.options = Ducky.options({
@@ -168,4 +167,7 @@ export default class Module {
         return kernel.rs("graphqlio").stop()
     }
 }
+
+/*  export the Microkernel module  */
+module.exports = Module
 
