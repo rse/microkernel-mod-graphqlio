@@ -76,6 +76,12 @@ class Module {
             options.push({
                 names: [ "secret" ], type: "string", "default": this.options.secret,
                 help: "use secret for JSON Web Tokens (JWT)", helpArg: "SECRET" })
+            options.push({
+                names: [ "pubsub" ], type: "string", "default": this.options.pubsub,
+                help: "use Public/Subscribe facility (spm, mpm, rpm)", helpArg: "URL" })
+            options.push({
+                names: [ "keyval" ], type: "string", "default": this.options.keyval,
+                help: "use Key/Value facility (spm, mpm, rpm)", helpArg: "URL" })
         })
     }
     prepare (kernel) {
@@ -99,8 +105,8 @@ class Module {
             prefix:   this.options.prefix,
             name:     this.options.name,
             url:      url,
-            pubsub:   this.options.pubsub,
-            keyval:   this.options.keyval,
+            pubsub:   cliOptions.pubsub,
+            keyval:   cliOptions.keyval,
             frontend: this.options.frontend,
             graphiql: this.options.graphiql,
             encoding: this.options.encoding,
