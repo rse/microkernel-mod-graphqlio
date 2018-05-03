@@ -40,7 +40,7 @@ class Module {
                 key:     [ "string", "" ]
             },
             ttl:         [ "number", 7 * 24 * 60 * 60 * 1000 ],
-            throttle     [ "number", 50 ],
+            throttle:    [ "number", 50 ],
             pubsub:      [ "string", "spm" ],
             keyval:      [ "string", "spm" ],
             secret:      [ "string", "" ],
