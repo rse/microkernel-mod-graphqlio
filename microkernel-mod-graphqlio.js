@@ -40,6 +40,7 @@ class Module {
                 key:     [ "string", "" ]
             },
             ttl:         [ "number", 7 * 24 * 60 * 60 * 1000 ],
+            throttle     [ "number", 50 ],
             pubsub:      [ "string", "spm" ],
             keyval:      [ "string", "spm" ],
             secret:      [ "string", "" ],
@@ -110,6 +111,7 @@ class Module {
             frontend: this.options.frontend,
             graphiql: this.options.graphiql,
             encoding: this.options.encoding,
+            throttle: this.options.throttle,
             debug:    this.options.debug
         }
         if (cliOptions.secret !== "")
