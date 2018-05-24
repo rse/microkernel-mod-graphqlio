@@ -40,6 +40,7 @@ class Module {
                 key:     [ "string", "" ]
             },
             ttl:         [ "number", 7 * 24 * 60 * 60 * 1000 ],
+            samesite:    [ "/^(none|Strict|Lax)$/", "Strict" ],
             throttle:    [ "number", 50 ],
             pubsub:      [ "string", "spm" ],
             keyval:      [ "string", "spm" ],
@@ -111,6 +112,8 @@ class Module {
             frontend: this.options.frontend,
             graphiql: this.options.graphiql,
             encoding: this.options.encoding,
+            ttl:      this.options.ttl,
+            samesite: this.options.samesite,
             throttle: this.options.throttle,
             debug:    this.options.debug
         }
