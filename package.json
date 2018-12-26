@@ -18,20 +18,20 @@
     "homepage": "https://github.com/rse/microkernel-mod-graphqlio",
     "bugs":     "https://github.com/rse/microkernel-mod-graphqlio/issues",
     "dependencies": {
-        "bluebird":                   "3.5.1",
-        "ducky":                      "2.6.11",
-        "graphql-io-server":          "1.5.5"
+        "bluebird":                   "3.5.3",
+        "ducky":                      "2.7.0",
+        "graphql-io-server":          "1.6.0"
     },
     "devDependencies": {
         "babel-cli":                  "6.26.0",
         "babel-preset-env":           "1.7.0",
-        "babel-eslint":               "8.2.6",
-        "eslint":                     "5.2.0",
-        "eslint-config-standard":     "11.0.0",
-        "eslint-plugin-standard":     "3.1.0",
-        "eslint-plugin-promise":      "3.8.0",
-        "eslint-plugin-import":       "2.13.0",
-        "eslint-plugin-node":         "7.0.1"
+        "babel-eslint":               "10.0.1",
+        "eslint":                     "5.11.0",
+        "eslint-config-standard":     "12.0.0",
+        "eslint-plugin-standard":     "4.0.0",
+        "eslint-plugin-promise":      "4.0.1",
+        "eslint-plugin-import":       "2.14.0",
+        "eslint-plugin-node":         "8.0.0"
     },
     "peerDependencies": {
         "microkernel":                "*",
