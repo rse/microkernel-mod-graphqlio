@@ -92,7 +92,7 @@ class Module {
             return
 
         /*  determine CLI options  */
-        let cliOptions = kernel.rs("options:options")
+        const cliOptions = kernel.rs("options:options")
 
         /*  sanity check TLS usage  */
         if (   (cliOptions.key !== "" && cliOptions.crt === "")
@@ -100,10 +100,10 @@ class Module {
             throw new Error("TLS requires both Certificate and Key")
 
         /*  determine GraphQL-IO Server options  */
-        let withTLS = (cliOptions.crt !== "" && cliOptions.key !== "")
-        let protocol = withTLS ? "https" : "http"
-        let url = `${protocol}://${cliOptions.host}:${cliOptions.port}`
-        let opts = {
+        const withTLS = (cliOptions.crt !== "" && cliOptions.key !== "")
+        const protocol = withTLS ? "https" : "http"
+        const url = `${protocol}://${cliOptions.host}:${cliOptions.port}`
+        const opts = {
             prefix:   this.options.prefix,
             name:     this.options.name,
             url:      url,
@@ -125,7 +125,7 @@ class Module {
             opts.tls = { crt: cliOptions.crt, key: cliOptions.key }
 
         /*  create GraphQL-IO Server instance  */
-        let server = new Server(opts)
+        const server = new Server(opts)
         kernel.rs("graphqlio", server)
 
         /*  pass-through debug information from GraphQL-IO to Microkernel  */
@@ -139,7 +139,7 @@ class Module {
 
         /*  display network interaction information  */
         const displayListenHint = ([ scheme, proto ]) => {
-            let url = `${scheme}://${cliOptions.host}:${cliOptions.port}/api`
+            const url = `${scheme}://${cliOptions.host}:${cliOptions.port}/api`
             kernel.sv("log", "graphqlio", "info", `listen on ${url} (${proto})`)
         }
         displayListenHint(withTLS ?
